@@ -7,7 +7,7 @@ package pdfboxhelloworld;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +21,12 @@ public class CommandManager {
     /**
      * A dictionary mapping command names to Command instances.
      */
-    private final Hashtable<String, Constructor<?>> commandDictionary;
+    private final HashMap<String, Constructor<?>> commandDictionary;
     private final Stack<Command> undoStack;
     private final Stack<Command> redoStack;
 
     public CommandManager() {
-        this.commandDictionary = new Hashtable<String, Constructor<?>>();
+        this.commandDictionary = new HashMap<>();
         this.undoStack = new Stack<Command>();
         this.redoStack = new Stack<Command>();
     }
@@ -34,8 +34,9 @@ public class CommandManager {
     /**
      *
      * @param aString The name of a command that has been previously registered.
-     * @return The Command previously registered with the name aString or null
-     * if no command has been registered with the name, aString.
+     * @return A new Command instance of the class previously registered with
+     * the name aString or null if no command has been registered with the name,
+     * aString.
      */
     public Command makeCommandWithName(String aString) {
         Command result = null;
@@ -43,7 +44,7 @@ public class CommandManager {
         if (commandDictionary.containsKey(aString)) {
             Constructor<?> ctor = commandDictionary.get(aString);
             try {
-                result = (Command)ctor.newInstance(new Object[]{});
+                result = (Command) ctor.newInstance(new Object[]{});
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(CommandManager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -56,7 +57,7 @@ public class CommandManager {
      * Associate aCommand with aString name so that future calls to
      * getCommandForString() will return aCommand.
      *
-     * @param theClass The Class to register. It must have a constructor that 
+     * @param theClass The Class to register. It must have a constructor that
      * takes no arguments.
      * @param aString The name the class should be associated with
      */
@@ -64,7 +65,7 @@ public class CommandManager {
 
         try {
             Constructor<?> ctor = theClass.getConstructor(new Class<?>[]{});
-            
+
             commandDictionary.put(aString, ctor);
         } catch (NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(CommandManager.class.getName()).log(Level.SEVERE, null, ex);

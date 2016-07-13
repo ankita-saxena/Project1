@@ -21,7 +21,7 @@ public class AddBoxDocumentCommand extends DocumentCommand {
      */
     public AddBoxDocumentCommand() {
         super();
-        
+
         // ToDo: further construction
     }
 
@@ -31,13 +31,13 @@ public class AddBoxDocumentCommand extends DocumentCommand {
      * whatever operation(s) the receiver performs when executed.
      */
     @Override
-    public Command getUndoCommand() {
+    public Command makeReciprocalCommand() {
         DeleteBoxDocumentCommand result = new DeleteBoxDocumentCommand();
         assert null != result;
-        
+
         result.setArgs(arguments);
         result.setOwner(this.getOwner());
-        
+
         return result;
     }
 

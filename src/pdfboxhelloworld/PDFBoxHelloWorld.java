@@ -98,7 +98,7 @@ public final class PDFBoxHelloWorld {
         }
 
         PDFBoxHelloWorld_old.main2(args);
-        
+
         //PDDocument document = new PDDocument();
         PDDocument document = PDDocument.load(new File(args[0]));
         try {
